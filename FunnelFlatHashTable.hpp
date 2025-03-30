@@ -17,13 +17,13 @@ private:
 	{
 		K key;
 		V value;
-		int hash;
+		int64_t hash;
 
 		Entry() : key(), value(), hash(-1)
 		{
 		}
 
-		Entry(const K& key, const V& value, int hash) : key(key), value(value), hash(hash)
+		Entry(const K& key, const V& value, int64_t hash) : key(key), value(value), hash(hash)
 		{
 		}
 
@@ -137,16 +137,84 @@ public:
 		delete[] table;
 	}
 
+	class Iterator
+	{
+	public:
+		using iterator_category = std::forward_iterator_tag;
+		using difference_type = std::ptrdiff_t;
+		using value_type = std::pair<const K&, V&>;
+		using pointer = value_type*;
+		using reference = value_type&;
+
+		Iterator(Entry* table, uint64_t capacity, uint64_t index)
+			: table(table), capacity(capacity), index(index)
+		{
+			AdvanceToValidEntry();
+		}
+
+		std::pair<const K&, V&> operator*() const
+		{
+			return {table[index].key, table[index].value};
+		}
+
+		Iterator& operator++()
+		{
+			++index;
+			AdvanceToValidEntry();
+			return *this;
+		}
+
+		Iterator operator++(int)
+		{
+			Iterator tmp = *this;
+			++(*this);
+			return tmp;
+		}
+
+		bool operator==(const Iterator& other) const
+		{
+			return index == other.index;
+		}
+
+		bool operator!=(const Iterator& other) const
+		{
+			return !(*this == other);
+		}
+
+	private:
+		void AdvanceToValidEntry()
+		{
+			while (index < capacity && (table[index].IsEmpty() || table[index].IsTombstone()))
+			{
+				++index;
+			}
+		}
+
+		Entry* table;
+		uint64_t capacity;
+		uint64_t index;
+	};
+
+	Iterator begin()
+	{
+		return Iterator(table, capacity, 0);
+	}
+
+	Iterator end()
+	{
+		return Iterator(table, capacity, capacity);
+	}
+
 	V Get(const K& key) const
 	{
-		int hash = this->Hash(key);
+		int64_t hash = this->Hash(key);
 
 		uint64_t levelWidth = capacity >> 1;
 		uint64_t offset = 0;
 
 		do
 		{
-			uint64_t levelIndex = hash & (levelWidth - 1);
+			int64_t levelIndex = hash & (levelWidth - 1);
 			uint64_t tableIndex = offset + levelIndex;
 
 			const Entry& entry = table[tableIndex];
@@ -183,7 +251,7 @@ public:
 
 		do
 		{
-			uint64_t levelIndex = hash & (levelWidth - 1);
+			int64_t levelIndex = hash & (levelWidth - 1);
 			uint64_t tableIndex = offset + levelIndex;
 
 			Entry& entry = table[tableIndex];
@@ -223,14 +291,14 @@ public:
 
 	V Remove(const K& key)
 	{
-		int hash = this->Hash(key);
+		int64_t hash = this->Hash(key);
 
 		uint64_t levelWidth = capacity >> 1;
 		uint64_t offset = 0;
 
 		do
 		{
-			uint64_t levelIndex = hash & (levelWidth - 1);
+			int64_t levelIndex = hash & (levelWidth - 1);
 			uint64_t tableIndex = offset + levelIndex;
 
 			Entry& entry = table[tableIndex];

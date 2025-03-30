@@ -35,6 +35,15 @@ int main() {
         end = std::chrono::high_resolution_clock::now();
         std::cout << "  Get time: " << duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
 
+        // ITERATE
+        start = std::chrono::high_resolution_clock::now();
+        for (const auto& [k, v] : _map) {
+            (void)k;
+            (void)v;
+        }
+        end = std::chrono::high_resolution_clock::now();
+        std::cout << "  Iterate time: " << duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+
         // REMOVE
         start = std::chrono::high_resolution_clock::now();
         for (int key : keys) {  
@@ -64,6 +73,15 @@ int main() {
         end = std::chrono::high_resolution_clock::now();
         std::cout << "  Get time: " << duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
 
+        // ITERATE
+        start = std::chrono::high_resolution_clock::now();
+        for (const auto& [k, v] : _map) {
+            (void)k;
+            (void)v;
+        }
+        end = std::chrono::high_resolution_clock::now();
+        std::cout << "  Iterate time: " << duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+
         // REMOVE
         start = std::chrono::high_resolution_clock::now();
         for (int key : keys) {
@@ -75,11 +93,11 @@ int main() {
 
     {
         std::cout << "FunnelFlatHashTable benchmark:" << std::endl;
-        FunnelFlatHashTable<int, int> optimal_map;
+        FunnelFlatHashTable<int, int> _map;
         // PUT
         auto start = std::chrono::high_resolution_clock::now();
         for (int key : keys) {
-            optimal_map.Put(key, key * 2);
+            _map.Put(key, key * 2);
         }
         auto end = std::chrono::high_resolution_clock::now();
         std::cout << "  Put time: " << duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
@@ -87,16 +105,25 @@ int main() {
         // GET
         start = std::chrono::high_resolution_clock::now();
         for (int key : keys) {
-            volatile int val = optimal_map.Get(key);
+            volatile int val = _map.Get(key);
             (void)val;
         }
         end = std::chrono::high_resolution_clock::now();
         std::cout << "  Get time: " << duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
 
+        // ITERATE
+        start = std::chrono::high_resolution_clock::now();
+        for (const auto& [k, v] : _map) {
+            (void)k;
+            (void)v;
+        }
+        end = std::chrono::high_resolution_clock::now();
+        std::cout << "  Iterate time: " << duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+
         // REMOVE
         start = std::chrono::high_resolution_clock::now();
         for (int key : keys) {
-            optimal_map.Remove(key);
+            _map.Remove(key);
         }
         end = std::chrono::high_resolution_clock::now();
         std::cout << "  Remove time: " << duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
