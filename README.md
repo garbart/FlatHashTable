@@ -1,7 +1,7 @@
 ## FlatHashTable
 This repository contains implementation of a flat hash map using open addressing with linear probing, inspired by the paper "[Optimal Bounds for Open Addressing Without Reordering](https://arxiv.org/pdf/2501.02305)" by Martín Farach-Colton, Andrew Krapivin, and William Kuszmaul (2025).
 
-The implementation itself is contained in the FunnelFlatHashTable file.hpp, you can download it and use it in your projects. However, I do not recommend doing this because the implementation is very crude.
+The implementation itself is contained in the ```FunnelFlatHashTable.hpp```, you can download it and use it in your projects. However, I do not recommend doing this because the implementation is very crude.
 
 ## Benchamrk results
 10M elemnts:
