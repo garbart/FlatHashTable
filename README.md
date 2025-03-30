@@ -3,6 +3,25 @@ This repository contains implementation of a flat hash map using open addressing
 
 The implementation itself is contained in the FunnelFlatHashTable file.hpp, you can download it and use it in your projects. However, I do not recommend doing this because the implementation is very crude.
 
+## Benchamrk results
+10M elemnts:
+```
+absl::flat_hash_map benchmark:
+  Put time: 26947 ms
+  Get time: 8824 ms
+  Iterate time: 1522 ms
+  Remove time: 13798 ms
+std::unordered_map benchmark:
+  Put time: 10444 ms
+  Get time: 1674 ms
+  Iterate time: 713 ms
+  Remove time: 4140 ms
+FunnelFlatHashTable benchmark:
+  Put time: 3416 ms
+  Get time: 1844 ms
+  Iterate time: 435 ms
+  Remove time: 2182 ms 
+```
 ## Plans
 &#x2610; STL-style inerface
 
