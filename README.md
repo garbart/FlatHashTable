@@ -23,6 +23,8 @@ FunnelFlatHashTable benchmark:
   Remove time: 2182 ms 
 ```
 ## Plans
+&#x2610; Implement ElasticFlatHashTable
+
 &#x2610; STL-style inerface
 
 &#x2610; Full iterator support
